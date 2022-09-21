@@ -1,4 +1,4 @@
-# PERSONNAL PROJETC (Work in progress)
+# PERSONNAL PROJECT (Work in progress)
 
 ##
 ##
