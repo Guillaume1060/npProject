@@ -11,16 +11,19 @@ const router = express.Router();
 // if not, send back 400 (bad request)
 // add it to the post handler stack
 
+router.
+    route('/CarlaT_concerts')
+    .get(concertController.aliasCarlaTOnly, concertController.getAllConcerts)
 
 router
     .route('/')
     .get(concertController.getAllConcerts)
-// .post(concertController.createTour)
+    .post(concertController.createConcert)
 
-// router
-//     .route('/:id')
-//     .get(concertController.getTour)
-//     .patch(concertController.updateTour)
-//     .delete(concertController.deleteTour)
+router
+    .route('/:id')
+    .get(concertController.getConcert)
+    .patch(concertController.updateConcert)
+    .delete(concertController.deleteConcert)
 
 module.exports = router;
