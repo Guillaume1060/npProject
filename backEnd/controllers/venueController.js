@@ -106,9 +106,9 @@ exports.deleteVenue = async (req, res) => {
 
 exports.getVenueStats = async (req, res) => {
     try {
-        const stats = await Venue.aggregate([
+        const stats = await Venue.aggregate([ 
             {
-                $match: { capacity: { $gte: 500 } }
+                $match: { capacity: { $gte: 2200 } }
             },
             {
                 $group: {
@@ -126,6 +126,60 @@ exports.getVenueStats = async (req, res) => {
             status: 'success',
             data: {
                 stats
+            }
+        });
+
+    } catch (err) {
+        res.status(400).json({
+            status: 'fail',
+            message: err
+        })
+    }
+}
+
+/// ci dessous route non fonctionnelle qu'il faudra adapter sur un autre modèle. Voir udemy 8.103
+exports.getMonthlyPlan = async (req, res) => {
+    try {
+        const year = req.params.year * 1;
+        const plan = await Venue.aggregate([
+            {
+                $unwind: '$startDates'
+            },
+            {
+                $match: { startDates: {
+                    $gte: new Dates(`${year}-01-01`),
+                    $lte: new Dates(`${year}-12-31`),
+                    }
+                }
+            },
+            {
+                $group: {
+                    /// ci dessous on utilise les agregations pipelines operators qui nous intéressent
+                    _id: { $month: '$startDates'},
+                    numTourStarts: { $add : 1},
+                    tours: { $push: '$name'}
+                }
+            },
+            {
+                $addFields: { month: '$_id'}  
+            },
+            {   
+                $project: {
+                    _id: 0
+                }
+            },
+            {
+                $sort: { numTourStarts: -1 }
+            },
+            {
+                $limit: 12
+            }
+        ]);
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                plan
             }
         });
 
