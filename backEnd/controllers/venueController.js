@@ -108,7 +108,7 @@ exports.getVenueStats = async (req, res) => {
     try {
         const stats = await Venue.aggregate([ 
             {
-                $match: { capacity: { $gte: 2200 } }
+                $match: { capacity: { $gte: 1 } }
             },
             {
                 $group: {
@@ -137,7 +137,7 @@ exports.getVenueStats = async (req, res) => {
     }
 }
 
-/// ci dessous route non fonctionnelle qu'il faudra adapter sur un autre modèle. Voir udemy 8.103
+/// ci dessous route non fonctionnelle qu'il faudra adapter sur un autre modèle pour mon projet. Voir udemy 8.103
 exports.getMonthlyPlan = async (req, res) => {
     try {
         const year = req.params.year * 1;
