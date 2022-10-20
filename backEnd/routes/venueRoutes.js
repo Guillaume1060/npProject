@@ -9,6 +9,10 @@ router
     .get(venueController.getVenueStats);
 
 router
+    .route('/monthly-plan/:year')
+    .get(venueController.getMonthlyPlan);
+
+router
     .route('/')
     .get(venueController.getAllVenues)
     .post(venueController.createVenue);
